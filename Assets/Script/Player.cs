@@ -7,15 +7,11 @@ public class Player : MonoBehaviour
 {
     public float speed = 5f;
     private Rigidbody2D rb;
-    public Vector3 startPos;       // スタート位置
-    public GameObject gameOverUI;  // スコア＋リスポーンボタンのUI
     private bool isDead = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        startPos = transform.position;   // 初期位置を保存
-        gameOverUI.SetActive(false);     // 最初は非表示
     }
 
     private void Update()
@@ -50,16 +46,7 @@ public class Player : MonoBehaviour
         Debug.Log("ゲームオーバー");
         rb.velocity = Vector2.zero;
         isDead = true;
-        gameOverUI.SetActive(true); // スコアとリスポーンボタン表示
+        GameManager.Instance.GameOver();
     }
 
-    public void Respown()
-    {
-        transform.position = startPos;
-        rb.velocity = Vector2.zero;
-        rb.gravityScale = 1;
-        transform.localScale = new Vector3(1, 1, 1);
-        isDead = false;
-        gameObject.SetActive(false);
-    }
 }
