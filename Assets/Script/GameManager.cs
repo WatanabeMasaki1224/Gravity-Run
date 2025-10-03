@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     public GameObject gameOverUI;
     private bool isGameOver = false;
+    private float timer = 0;
+    public GameObject retryButton;
+    public Text resultScore;
 
     private void Awake()
     {
@@ -36,16 +39,27 @@ public class GameManager : MonoBehaviour
     {
         if(!isGameOver)
         {
-            score += 1;
-            UpdateScoreUI();
+            timer += Time.deltaTime;
+            if (timer >= 1f)
+            {
+                score += 1;
+                timer = 0f;
+                UpdateScoreUI();
+            }
+          
         }
     }
 
     void UpdateScoreUI()
     {
-      if(scoreText != null)
+        Debug.Log("UpdateScoreUI called, score: " + score);
+        if (scoreText != null)
         {
             scoreText.text = "Score:" + score.ToString();
+        }
+        else
+        {
+            Debug.Log("a");
         }
     }
 
@@ -60,6 +74,8 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         Time.timeScale = 0; // 一時停止
         gameOverUI.SetActive(true);
+        resultScore.gameObject.SetActive(true); // スコア表示
+        resultScore.text = "Score: " + score.ToString();
     }
 
     public void Retry()
@@ -68,4 +84,5 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // 現在のシーンを再読み込み
     }
 
+  
 }
