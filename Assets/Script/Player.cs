@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private bool isDead = false;
     private Animator animator;
+    public LayerMask groundLayer;
+    public Transform groundCheck; 
+    public float checkRadius = 0.2f;
 
     private void Start()
     {
@@ -24,7 +27,7 @@ public class Player : MonoBehaviour
             animator.SetBool("isRunning", true);
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             Gravity();
         }
@@ -36,6 +39,12 @@ public class Player : MonoBehaviour
         rb.gravityScale *= -1;
         transform.localScale = new Vector3(-1,-transform.localScale.y,1);
        
+    }
+
+    bool IsGrounded()
+    {
+        // â~èÛÇÃîªíËÇ≈ë´å≥Ç…ínñ Ç™Ç†ÇÈÇ©ämîF
+        return Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
